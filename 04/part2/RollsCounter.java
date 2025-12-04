@@ -51,7 +51,7 @@ public class RollsCounter {
 			for (int charIndex = 0; charIndex < length; charIndex++) {
 				if (charArray[charIndex] == '@'
 					&& countAround(grid, lineIndex, charIndex) < 4) {
-					lineCopy += '%';
+					lineCopy += '.';
 					count++;
 				} else {
 					lineCopy += charArray[charIndex];
@@ -63,8 +63,9 @@ public class RollsCounter {
 		for (String l : gridCopy) {
 			System.out.println(l);
 		}
-
-		return count;
+		if (count == 0)
+			return count;
+		return count + countRolls(gridCopy);
 	}
 
 	private static int	countAround(List< String > grid, int lineIndex, int charIndex) {
