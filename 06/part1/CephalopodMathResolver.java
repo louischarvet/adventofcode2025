@@ -72,7 +72,6 @@ public class CephalopodMathResolver {
 				result = (long) 0;
 			else
 				result = (long) 1;
-			System.out.println("operation: " + operation + " operator = |" + operator + "| pre result = " + result);
 
 			while (!operation.empty()) {
 				if (operator.charAt(0) == '+')
