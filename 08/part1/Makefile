@@ -13,4 +13,4 @@ compile:
 run:
 	mvn javafx:run -Djavafx.args="$(ARG)"
 
-.PHONY: all clean compile
+.PHONY: all clean compile run
