@@ -134,20 +134,23 @@ public class JunctionBoxesConnector {
 		for (Pair< Point3D, Pair< Point3D, Double > > entry : sortedPointDistances) {
 			Point3D	a = entry.getFirst(),
 				b = entry.getSecond().getFirst();
-			Set< Point3D >	pointSetA = findPointSet(pointSetList, a),
-				pointSetB = findPointSet(pointSetList, b);
+			// Set< Point3D >	pointSetA = findPointSet(pointSetList, a),
+			// 	pointSetB = findPointSet(pointSetList, b);
 //			System.out.println("found set: " + pointSet);
 //			if (pointSetList.indexOf(pointSet) == -1)
 //				findPointSet(pointSetList, b);
 
-			pointSetA.add(b);
-			pointSetB.add(a);
+			addPointsToSet(pointSetList, a, b);
 
-//			if (pointSetList.indexOf(pointSet) == -1) {
-			pointSetList.add(pointSetA);
-			pointSetList.add(pointSetB);
+// 			pointSetA.add(b);
+// 			pointSetB.add(a);
+
+// //			if (pointSetList.indexOf(pointSet) == -1) {
+// 			pointSetList.add(pointSetA);
+// 			pointSetList.add(pointSetB);
 //			}
-			if (limit > 0 && i++ >= limit)
+			System.out.println("i = " + i);
+			if (limit > 0 && ++i >= limit)
 				break;
 		}
 		// for (Set< Point3D > setA : pointSetList) {
@@ -160,12 +163,31 @@ public class JunctionBoxesConnector {
 		// 		}
 		// 	}
 		// }
-		List<Set<Point3D>> uniqueList = pointSetList.stream()
-    		.distinct()
-    		.collect(Collectors.toList());
+		// List<Set<Point3D>> uniqueList = pointSetList.stream()
+    	// 	.distinct()
+    	// 	.collect(Collectors.toList());
 
-		return uniqueList;
-	//	return pointSetList;
+	//	return uniqueList;
+		return pointSetList;
+	}
+
+	private static void	addPointsToSet(List< Set< Point3D > >	pointSetList, Point3D a, Point3D b) {
+		for (Set< Point3D > pointSet : pointSetList) {
+			if (pointSet.contains(a)) {
+				if (!pointSet.contains(b))
+					pointSet.add(b);
+				return ;
+			}
+			if (pointSet.contains(b)) {
+				if (!pointSet.contains(a))
+					pointSet.add(a);
+				return ;
+			}
+		}
+		Set< Point3D >	newSet = new HashSet<>();
+		newSet.add(a);
+		newSet.add(b);
+		pointSetList.add(newSet);
 	}
 
 	private static Set< Point3D >	findPointSet(List< Set< Point3D > > pointSetList, Point3D point) {
@@ -182,14 +204,16 @@ public class JunctionBoxesConnector {
 	private static Map< Point3D, Double >	calculateDistances(List< Point3D > pointList, Point3D currentPoint) {
 		Map< Point3D, Double >	distances = new HashMap<>();
 	//	Integer currentPointID = pointList.indexOf(currentPoint);
-
+		System.out.println("currentPoint: " + currentPoint);
 		for (Point3D point : pointList) {
 			if (point != currentPoint) {
 				Double	distance = currentPoint.distance(point);
+				System.out.println("\t" + distance + "\tfrom " + point);
 
 				distances.put(point, distance);
 			}
 		}
+		System.out.println();
 
 		return distances;
 	}
